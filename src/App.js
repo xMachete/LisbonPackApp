@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Form from "./components/Form";
+import Logo from "./components/Logo";
+import Stats from "./components/Stats";
+import PackingList from "./components/PackingList";
+import { useState } from "react";
 
-function App() {
+export default function App() {
+  const [items, setItems] = useState([]);
+
+  const itemsLength = items.length;
+  const itemsPacked = items.reduce(
+    (acc, curr) => (acc + curr.checked ? 1 : 0),
+    0
+  );
+
+  const handleDelete = (id) =>
+    setItems((items) => items.filter((item) => item.id !== id));
+
+  const handleAddiction = (item) => setItems((items) => [...items, item]);
+
+  const toggleCheck = (id) =>
+    setItems((items) =>
+      items.map((item) =>
+        item.id === id ? { ...item, checked: !item.checked } : item
+      )
+    );
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Logo />
+      <Form onHandleAddiction={handleAddiction} />
+      <PackingList
+        items={items}
+        onHandleDelete={handleDelete}
+        onToggleCheck={toggleCheck}
+      />
+      <Stats itemsLength={itemsLength} itemsPacked={itemsPacked} />
     </div>
   );
 }
-
-export default App;
