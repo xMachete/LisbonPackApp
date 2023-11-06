@@ -1,8 +1,8 @@
 import React from "react";
-import Form from "./components/Form";
-import Logo from "./components/Logo";
-import Stats from "./components/Stats";
-import PackingList from "./components/PackingList";
+import Form from "./Form";
+import Logo from "./Logo";
+import Stats from "./Stats";
+import PackingList from "./PackingList";
 import { useState } from "react";
 
 export default function App() {
@@ -25,6 +25,12 @@ export default function App() {
         item.id === id ? { ...item, checked: !item.checked } : item
       )
     );
+  const handleDeleteList = () => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete whole list?"
+    );
+    if (confirm) setItems([]);
+  };
 
   return (
     <div className="app">
@@ -34,6 +40,7 @@ export default function App() {
         items={items}
         onHandleDelete={handleDelete}
         onToggleCheck={toggleCheck}
+        onHandleDeleteList={handleDeleteList}
       />
       <Stats itemsLength={itemsLength} itemsPacked={itemsPacked} />
     </div>
